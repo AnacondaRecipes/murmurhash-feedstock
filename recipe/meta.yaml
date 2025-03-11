@@ -1,27 +1,24 @@
 {% set name = "murmurhash" %}
-{% set version = "1.0.7" %}
-{% set sha256sum = "630a396ebd31ca44d89b4eca36fa74ea8aae724adf0afaa2de7680c350b2936f" %}
+{% set version = "1.0.12" %}
 
 package:
   name: {{ name }}
   version: {{ version }}
 
 source:
-  fn: {{ name }}-{{ version }}.tar.gz
   url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
-  sha256: {{ sha256sum }}
+  sha256: 467b7ee31c1f79f46d00436a1957fc52a0e5801369dd2f30eb7655f380735b5f
 
 build:
   number: 0
-  script: {{ PYTHON }} -m pip install . --no-deps -vv
-  skip: true  # [win32 or linux32]
+  script: {{ PYTHON }} -m pip install . --no-deps --no-build-isolation --ignore-installed --no-cache-dir -vv
+  skip: true  # [py<36]
 
 requirements:
   build:
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
   host:
-    - msinttypes  # [win and py<35]
     - cython >=0.25
     - python
     - pip
@@ -48,6 +45,7 @@ about:
   license_file: LICENSE
   summary: Cython bindings for MurmurHash2
   dev_url: https://github.com/explosion/murmurhash/
+  doc_url: https://github.com/explosion/murmurhash/
 
 extra:
   recipe-maintainers:
