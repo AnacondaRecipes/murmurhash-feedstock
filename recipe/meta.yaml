@@ -12,39 +12,43 @@ source:
 build:
   number: 0
   script: {{ PYTHON }} -m pip install . --no-deps --no-build-isolation --ignore-installed --no-cache-dir -vv
-  skip: true  # [py<36]
+  skip: true  # [py<36 or py>315]
 
 requirements:
   build:
+    - {{ stdlib('c') }}
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
   host:
-    - cython >=3.1
     - python
     - pip
     - setuptools
+    - cython >=3.1
+    - wheel
   run:
     - python
 
 test:
-  requires:
-    - mmh3
-    - pytest
-    - pip
   imports:
     - murmurhash
     - murmurhash.mrmr
+  requires:
+    - pytest
+    - pip
   commands:
     - pip check
+    - python -c "from importlib.metadata import version; assert(version('{{ name }}')=='{{ version }}')"
+    - pytest --pyargs murmurhash.tests
 
 about:
-  home: https://github.com/explosion/murmurhash/
+  home: https://github.com/explosion/murmurhash
   license: MIT
   license_family: MIT
   license_file: LICENSE
   summary: Cython bindings for MurmurHash2
-  dev_url: https://github.com/explosion/murmurhash/
-  doc_url: https://github.com/explosion/murmurhash/
+  description: Cython bindings for MurmurHash2
+  dev_url: https://github.com/explosion/murmurhash
+  doc_url: https://github.com/explosion/murmurhash
 
 extra:
   recipe-maintainers:
