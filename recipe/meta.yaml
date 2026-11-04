@@ -1,5 +1,5 @@
 {% set name = "murmurhash" %}
-{% set version = "1.0.15" %}
+{% set version = "1.0.16" %}
 
 package:
   name: {{ name }}
@@ -7,12 +7,12 @@ package:
 
 source:
   url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
-  sha256: 58e2b27b7847f9e2a6edf10b47a8c8dd70a4705f45dccb7bf76aeadacf56ba01
+  sha256: 09794ace87d87d4adbefe6c614a31ecc5cc65ef815a5c61a02bf3055150bdbbf
 
 build:
   number: 0
   script: {{ PYTHON }} -m pip install . --no-deps --no-build-isolation --ignore-installed --no-cache-dir -vv
-  skip: true  # [py<36 or py>315]
+  skip: true  # [py<39 or py>315]
 
 requirements:
   build:
@@ -24,7 +24,6 @@ requirements:
     - pip
     - setuptools
     - cython >=3.1
-    - wheel
   run:
     - python
 
